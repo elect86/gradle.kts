@@ -77,69 +77,72 @@ class Gradle {
     var javaHome: File? = null
 
     operator fun invoke(): String {
-        val cmd = buildString {
-            fun Boolean.ap(s: String) = append(when {
-                                                   this -> " --$s"
-                                                   else -> " --no-$s"
-                                               })
-            append("gradle")
-            configurationCache?.ap(" configuration-cache")
-            configurationCacheProblems?.let { append(" --configuration-cache-problems $it") }
-            if (`continue`) append(" --continue")
-            if (exportKeys) append(" --export-keys")
-            dependencyVerification?.let { append(" -F $it") }
-            if (writeVerificationMetadata.isNotEmpty()) append(" -M ${writeVerificationMetadata.joinToString(",")}")
-            if (refreshKeys) append(" --refresh-keys")
-            if (rerunTasks) append(" --rerun-tasks")
-            if (continuous) append(" -t")
-            if (excludeTask.isNotEmpty()) append(" -x $excludeTask")
-
-            if (help) append(" -h")
-            if (version) append(" -v")
-            if (fullStacktrace) append(" -S")
-            if (stacktrace) append(" -s")
-            scan?.ap(" scan")
-            if (clientDebug) append(" -Dorg.gradle.debug=true")
-            if (daemonDebug) append(" -Dorg.gradle.daemon.debug=true")
-            buildCache?.ap(" build-cache")
-            configureOnDemand?.ap(" configure-on-demand")
-            if (maxWorkers != -1) append(" --max-workers $maxWorkers")
-            parallel?.ap("parallel")
-            priority?.let { append(" --priority $it") }
-            if (profile) append(" --profile")
-            watchFS?.ap("watch-fs")
-            daemon?.ap("daemon")
-            if (foreground) append(" --foreground")
-            if (status) append(" --status")
-            if (stop) append(" --stop")
-            if (idleTimeout != -1) append(" -Dorg.gradle.daemon.idletimeout=$idleTimeout")
-            loggingLevel?.let { append(" -Dorg.gradle.logging.level=$it") }
-            if (quiet) append(" -q")
-            if (warn) append(" -w")
-            if (info) append(" -i")
-            if (debug) append(" -d")
-            console?.let { append(" --console=$it") }
-            warningMode?.let { append(" --warning-mode=$it") }
-            if (includeBuild) append(" --include-build")
-            if (offline) append(" --offline")
-            if (refreshDependencies) append(" --refresh-dependencies")
-            if (dryRun) append(" --dry-run")
-            if (writeLocks) append(" --write-locks")
-            if (updateLocks.isNotEmpty()) append(" --update-locks ${updateLocks.joinToString(",")}")
-            if (noRebuild) append(" --no-rebuild")
-            if (buildFile.isNotEmpty()) append(" -b $buildFile")
-            settingsFile?.run { append(" -c $absolutePath") }
-            gradleUserHome?.run { append(" -g $absolutePath") }
-            projectDir?.run { append(" -p $absolutePath") }
-            projectCacheDir?.run { append(" --projectCacheDir $absolutePath") }
-            for ((key, value) in systemProps) append(" -D$key=$value")
-            if (initScript.isNotEmpty()) append(" -I $initScript")
-            for ((key, value) in projectProps) append(" -P$key=$value")
-            for (arg in jvmArgs) append(" -Dorg.gradle.jvmargs=$arg")
-            javaHome?.run { append(" -Dorg.gradle.java.home=$absolutePath") }
+        val cmd = "gradle"
+        val args = arrayListOf<String>()
+        fun Boolean.ap(s: String) {
+            args += when {
+                this -> "--$s"
+                else -> "--no-$s"
+            }
         }
-        print(cmd)
-        return cmd()
+
+        configurationCache?.ap("configuration-cache")
+        configurationCacheProblems?.let { args.add("--configuration-cache-problems", it) }
+        if (`continue`) args += "--continue"
+        if (exportKeys) args += "--export-keys"
+        dependencyVerification?.let { args.add("-F", it) }
+        if (writeVerificationMetadata.isNotEmpty()) args.add("-M", writeVerificationMetadata.joinToString(","))
+        if (refreshKeys) args += "--refresh-keys"
+        if (rerunTasks) args += "--rerun-tasks"
+        if (continuous) args += "-t"
+        if (excludeTask.isNotEmpty()) args.add("-x", excludeTask)
+
+        if (help) args += "-h"
+        if (version) args += "-v"
+        if (fullStacktrace) args += "-S"
+        if (stacktrace) args += "-s"
+        scan?.ap("scan")
+        if (clientDebug) args += "-Dorg.gradle.debug=true"
+        if (daemonDebug) args += "-Dorg.gradle.daemon.debug=true"
+        buildCache?.ap("build-cache")
+        configureOnDemand?.ap("configure-on-demand")
+        if (maxWorkers != -1) args.add("--max-workers", maxWorkers)
+        parallel?.ap("parallel")
+        priority?.let { args.add("--priority", it) }
+        if (profile) args += "--profile"
+        watchFS?.ap("watch-fs")
+        daemon?.ap("daemon")
+        if (foreground) args += "--foreground"
+        if (status) args += "--status"
+        if (stop) args += "--stop"
+        if (idleTimeout != -1) args += "-Dorg.gradle.daemon.idletimeout=$idleTimeout"
+        loggingLevel?.let { args += "-Dorg.gradle.logging.level=$it" }
+        if (quiet) args+="-q"
+        if (warn) args += "-w"
+        if (info) args += "-i"
+        if (debug) args += "-d"
+        console?.let { args += "--console=$it" }
+        warningMode?.let { args += "--warning-mode=$it" }
+        if (includeBuild) args += "--include-build"
+        if (offline) args += "--offline"
+        if (refreshDependencies) args += "--refresh-dependencies"
+        if (dryRun) args += "--dry-run"
+        if (writeLocks) args += "--write-locks"
+        if (updateLocks.isNotEmpty()) args.add("--update-locks", updateLocks.joinToString(","))
+        if (noRebuild) args += "--no-rebuild"
+        if (buildFile.isNotEmpty()) args.add("-b", buildFile)
+        settingsFile?.run { args.add("-c", absolutePath) }
+        gradleUserHome?.run { args.add("-g", absolutePath) }
+        projectDir?.run { args.add("-p", absolutePath) }
+        projectCacheDir?.run { args.add("--projectCacheDir", absolutePath) }
+        for ((key, value) in systemProps) args += "-D$key=$value"
+        if (initScript.isNotEmpty()) args.add("-I", initScript)
+        for ((key, value) in projectProps) args += "-P$key=$value"
+        for (arg in jvmArgs) args += "-Dorg.gradle.jvmargs=$arg"
+        javaHome?.run { args += "-Dorg.gradle.java.home=$absolutePath" }
+
+        //        print(cmd)
+        return cmd(args)
     }
 
     enum class Priority { normal, low }
