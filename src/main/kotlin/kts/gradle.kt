@@ -38,7 +38,7 @@ class Gradle {
     var maxWorkers = -1
     var parallel: Boolean? = null
     var priority: Priority? = null
-    var profile = true
+    var profile = false
 
     //    var scan = false
     var watchFS: Boolean? = null
@@ -83,7 +83,7 @@ class Gradle {
                                                    else -> " --no-$s"
                                                })
             append("gradle")
-            configurationCache?.ap("configuration-cache")
+            configurationCache?.ap(" configuration-cache")
             configurationCacheProblems?.let { append(" --configuration-cache-problems $it") }
             if (`continue`) append(" --continue")
             if (exportKeys) append(" --export-keys")
@@ -98,11 +98,11 @@ class Gradle {
             if (version) append(" -v")
             if (fullStacktrace) append(" -S")
             if (stacktrace) append(" -s")
-            scan?.ap("scan")
+            scan?.ap(" scan")
             if (clientDebug) append(" -Dorg.gradle.debug=true")
             if (daemonDebug) append(" -Dorg.gradle.daemon.debug=true")
-            buildCache?.ap("build-cache")
-            configureOnDemand?.ap("configure-on-demand")
+            buildCache?.ap(" build-cache")
+            configureOnDemand?.ap(" configure-on-demand")
             if (maxWorkers != -1) append(" --max-workers $maxWorkers")
             parallel?.ap("parallel")
             priority?.let { append(" --priority $it") }
@@ -138,7 +138,7 @@ class Gradle {
             for (arg in jvmArgs) append(" -Dorg.gradle.jvmargs=$arg")
             javaHome?.run { append(" -Dorg.gradle.java.home=$absolutePath") }
         }
-        //        print(cmd)
+        print(cmd)
         return cmd()
     }
 

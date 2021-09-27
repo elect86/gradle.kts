@@ -50,9 +50,10 @@ class GradleBuilder(override val gradle: Gradle) : DebuggingOptions,
         }
 
     /** Continue task execution after a task failure. */
-    fun `continue`() {
-        gradle.`continue` = true
-    }
+    val `continue`: Unit
+        get() {
+            gradle.`continue` = true
+        }
 
     //    /** Uses the Gradle Daemon to run the build. Starts the Daemon if not running. */
     //    fun daemon() {
@@ -60,9 +61,10 @@ class GradleBuilder(override val gradle: Gradle) : DebuggingOptions,
     //    }
 
     /** Exports the public keys used for dependency verification. */
-    fun exportKeys() {
-        gradle.exportKeys = true
-    }
+    val exportKeys: Unit
+        get() {
+            gradle.exportKeys = true
+        }
 
     /** Configures the dependency verification mode (strict, lenient or off) */
     var dependencyVerification: Gradle.DependencyVerification
@@ -75,19 +77,22 @@ class GradleBuilder(override val gradle: Gradle) : DebuggingOptions,
     val writeVerificationMetadata: ArrayList<String> by gradle::writeVerificationMetadata
 
     /** Refresh the public keys used for dependency verification. */
-    fun refreshKeys() {
-        gradle.refreshKeys = true
-    }
+    val refreshKeys: Unit
+        get() {
+            gradle.refreshKeys = true
+        }
 
     /** Ignore previously cached task results. */
-    fun rerunTasks() {
-        gradle.rerunTasks = true
-    }
+    val rerunTasks: Unit
+        get() {
+            gradle.rerunTasks = true
+        }
 
     /** Enables continuous build. Gradle does not exit and will re-execute tasks when task file inputs change. */
-    fun continuous() {
-        gradle.continuous = true
-    }
+    val continuous: Unit
+        get() {
+            gradle.continuous = true
+        }
 
     /** Specify a task to be excluded from execution. */
     var excludeTask: String
@@ -102,26 +107,30 @@ interface DebuggingOptions {
     val gradle: Gradle
 
     /** Shows a help message with all available CLI options. */
-    fun help() {
-        gradle.help = true
-    }
+    val help: Unit
+        get() {
+            gradle.help = true
+        }
 
     /** Prints Gradle, Groovy, Ant, JVM, and operating system version information. */
-    fun version() {
-        gradle.version = true
-    }
+    val version: Unit
+        get() {
+            gradle.version = true
+        }
 
     /** Print out the full (very verbose) stacktrace for any exceptions. See also logging options.
      *  @see [LoggingOptions] */
-    fun fullStacktrace() {
-        gradle.fullStacktrace = true
-    }
+    val fullStacktrace: Unit
+        get() {
+            gradle.fullStacktrace = true
+        }
 
     /** Print out the stacktrace also for user exceptions (e.g. compile error). See also logging options.
      *  @see [LoggingOptions] */
-    fun stacktrace() {
-        gradle.stacktrace = true
-    }
+    val stacktrace: Unit
+        get() {
+            gradle.stacktrace = true
+        }
 
     /** Create a [build scan](https://gradle.com/build-scans?_ga=2.88752987.1129026144.1632232721-388024276.1611139718)
      *  with fine-grained information about all aspects of your Gradle build.  */
@@ -133,14 +142,16 @@ interface DebuggingOptions {
 
     /** Debug Gradle client (non-Daemon) process. Gradle will wait for you to attach a debugger at `localhost:5005`
      *  by default. */
-    fun clientDebug() {
-        gradle.clientDebug = true
-    }
+    val clientDebug: Unit
+        get() {
+            gradle.clientDebug = true
+        }
 
     /** Debug [Gradle Daemon](https://docs.gradle.org/current/userguide/gradle_daemon.html#gradle_daemon) process. */
-    fun daemonDebug() {
-        gradle.daemonDebug = true
-    }
+    val daemonDebug: Unit
+        get() {
+            gradle.daemonDebug = true
+        }
 }
 
 interface PerformanceOptions {
@@ -185,9 +196,10 @@ interface PerformanceOptions {
         }
 
     /** Generates a high-level performance report in the `$buildDir/reports/profile` directory. `--scan` is preferred. */
-    fun profile() {
-        gradle.profile = true
-    }
+    val profile: Unit
+        get() {
+            gradle.profile = true
+        }
 
     //    /** Generate a build scan with detailed performance diagnostics. */
     //    fun scan() {
@@ -253,24 +265,28 @@ interface LoggingOptions {
         }
 
     /** Log errors only. */
-    fun quiet() {
-        gradle.quiet = true
-    }
+    val quiet: Unit
+        get() {
+            gradle.quiet = true
+        }
 
     /** Set log level to warn. */
-    fun warn() {
-        gradle.warn = true
-    }
+    val warn: Unit
+        get() {
+            gradle.warn = true
+        }
 
     /** Set log level to info. */
-    fun info() {
-        gradle.info = true
-    }
+    val info: Unit
+        get() {
+            gradle.info = true
+        }
 
     /** Log in debug mode (includes normal stacktrace). */
-    fun debug() {
-        gradle.debug = true
-    }
+    val debug: Unit
+        get() {
+            gradle.debug = true
+        }
 
     /** Specifies which type of console output to generate. */
     var console: Gradle.Console
@@ -286,31 +302,36 @@ interface ExecutionOptions {
     val gradle: Gradle
 
     /** Run the build as a composite, including the specified build. See [Composite Builds](https://docs.gradle.org/current/userguide/composite_builds.html#composite_builds). */
-    fun includeBuild() {
-        gradle.includeBuild = true
-    }
+    val includeBuild: Unit
+        get() {
+            gradle.includeBuild = true
+        }
 
     /** Specifies that the build should operate without accessing network resources. Learn more about
      *  [options to override dependency caching](https://docs.gradle.org/current/userguide/dynamic_versions.html#sec:controlling_dependency_caching_command_line). */
-    fun offline() {
-        gradle.offline = true
-    }
+    val offline: Unit
+        get() {
+            gradle.offline = true
+        }
 
     /** Refresh the state of dependencies. Learn more about how to use this in the [dependency management docs](https://docs.gradle.org/current/userguide/dynamic_versions.html#sec:controlling_dependency_caching_command_line). */
-    fun refreshDependencies() {
-        gradle.refreshDependencies = true
-    }
+    val refreshDependencies: Unit
+        get() {
+            gradle.refreshDependencies = true
+        }
 
     /** Run Gradle with all task actions disabled. Use this to show which task would have executed. */
-    fun dryRun() {
-        gradle.dryRun = true
-    }
+    val dryRun: Unit
+        get() {
+            gradle.dryRun = true
+        }
 
     /** Indicates that all resolved configurations that are lockable should have their lock state persisted.
      *  Learn more about this in [dependency locking](https://docs.gradle.org/current/userguide/dependency_locking.html#dependency-locking). */
-    fun writeLocks() {
-        gradle.writeLocks = true
-    }
+    val writeLocks: Unit
+        get() {
+            gradle.writeLocks = true
+        }
 
     /** Indicates that versions for the specified modules have to be updated in the lock file. This flag also implies
      *  --write-locks. Learn more about this in [dependency locking](https://docs.gradle.org/current/userguide/dependency_locking.html#dependency-locking). */
@@ -320,9 +341,10 @@ interface ExecutionOptions {
 
     /** Do not rebuild project dependencies. Useful for [debugging and fine-tuning](https://docs.gradle.org/current/userguide/organizing_gradle_projects.html#sec:build_sources)
      *  `buildSrc`, but can lead to wrong results. Use with caution! */
-    fun dontRebuild() {
-        gradle.noRebuild = true
-    }
+    val dontRebuild: Unit
+        get() {
+            gradle.noRebuild = true
+        }
 }
 
 interface EnvironmentOptions {
